@@ -6,7 +6,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,8 +23,14 @@ public class ChatClient {
     private static Thread senderThread;
     private static ConsoleLogger consoleLogger;
     private static FileLogger fileLogger;
+    private static Set<String> arguments = new HashSet<>();
     
     public static void main(String args[]) throws IOException {
+        
+        for(String arg : args) {
+            arguments.add(arg);
+        }
+        
         // Intro
         System.out.println("** ChatClient v0.1");
         System.out.println("** cvut.fel.klimefi1");
@@ -32,8 +40,20 @@ public class ChatClient {
         ChatClient.fileLogger = new FileLogger();
         
         try {
+            Scanner input = new Scanner(System.in);
+            
+            // Get server address
+            String ip = "127.0.0.1";
+            int port = 4567;
+            if(arguments.contains("selectip")) {
+                System.out.print("Select IP address (default 127.0.0.1): ");
+                ip = input.nextLine();
+                System.out.print("Select port (default 4567): ");
+                port = input.nextInt();
+            }
+            
             // Connect to the server
-            server = new Socket("127.0.0.1", 4567);
+            server = new Socket(ip, port);
             DataOutputStream dos = new DataOutputStream(server.getOutputStream());
             Scanner response = new Scanner(server.getInputStream());
 
@@ -46,7 +66,6 @@ public class ChatClient {
             Sender sender = new Sender(dos);
 
             // Scan the nick as the first action
-            Scanner input = new Scanner(System.in);
             String command;
             System.out.println("Client started ...\n");
             System.out.print("Insert nick: ");
@@ -54,9 +73,6 @@ public class ChatClient {
 
             // Set the nick
             dos.writeBytes("NICK " + command + "\n");
-//            if(response.hasNext()) {
-//                System.out.println(response.nextLine());
-//            }
 
             // Run the threads
             receiverThread = new Thread(receiver);
@@ -70,6 +86,7 @@ public class ChatClient {
     }
     
     public static void disconnect() {
+        // TODO fix the "still running after disconnect" issue
         System.out.println("Client stopped.");
         try {
             if(senderThread != null)
