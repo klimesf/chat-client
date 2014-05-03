@@ -8,8 +8,6 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Main class of the Chat Client
@@ -18,12 +16,36 @@ import java.util.logging.Logger;
  */
 public class ChatClient {
 
+    /**
+     * Server socket
+     */
     private static Socket server;
+    
+    /**
+     * Receiver instance
+     */
     private static Receiver receiver;
+    
+    /**
+     * Sender instance
+     */
     private static Sender sender;
+    
+    /**
+     * ConsoleLogger instance
+     */
     private static ConsoleLogger consoleLogger;
+    
+    /**
+     * File logger instance
+     */
     private static FileLogger fileLogger;
 
+    /**
+     * Main method
+     * 
+     * @param args command line arguments
+     */
     public static void main(String args[]) {
 
         // Intro
@@ -82,6 +104,9 @@ public class ChatClient {
         }
     }
 
+    /**
+     * Disconnects from server and cleans resources
+     */
     public static void disconnect() {
         
         System.out.println("Disconnected ..");

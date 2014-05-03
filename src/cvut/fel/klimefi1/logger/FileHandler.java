@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package cvut.fel.klimefi1.logger;
 
 import java.io.DataOutputStream;
@@ -15,7 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Facade for saving logs into file
+ * Handler for logging files
+ * 
  * @author Filip Kimes <klimefi1@fel.cvut.cz>
  */
 public class FileHandler {
@@ -36,7 +31,8 @@ public class FileHandler {
     private final String filename;
 
     /**
-     * Creates FileOutput class for given filename
+     * Creates FileHandler for given filename.
+     * 
      * @param filename
      * @throws FileNotFoundException 
      */
@@ -47,7 +43,8 @@ public class FileHandler {
     }
     
     /**
-     * Writes given message to the file
+     * Writes given message to the file.
+     * 
      * @param log 
      */
     public void writeBytes(String log) {
@@ -59,7 +56,7 @@ public class FileHandler {
     }
     
     /**
-     * Closes file
+     * Closes opened files. TTypically used to clean up resources.
      */
     public void close() {
         try {

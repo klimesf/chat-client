@@ -7,20 +7,30 @@ import java.util.Scanner;
 /**
  * Sender class
  * 
- * Reads from System.in and sends commands to the server
+ * Reads from given scanner and sends commands to the server
  * 
  * @author Filip Klimes <klimefi1@fel.cvut.cz>
  */
 public class Sender implements Runnable {
 
+    /**
+     * Data output stream to server
+     */
     private final DataOutputStream dos;
     
+    /**
+     * Thread in which Sender runs
+     */
     private final Thread thread;
     
+    /**
+     * Input scanner
+     */
     private final Scanner input;
     
     /**
      * Creates a sender with given data output stream
+     * 
      * @param input Scanner for input stream
      * @param dos Steam connected to the server
      */
@@ -32,6 +42,8 @@ public class Sender implements Runnable {
     
     /**
      * Starts the sender
+     * 
+     * Note: runs in new thread, must be closed with close()
      */
     public void start() {
         this.thread.start();
@@ -39,6 +51,8 @@ public class Sender implements Runnable {
     
     /**
      * Runs the sender
+     * 
+     * Implementation of Runnable interface
      */
     @Override
     public void run() {
@@ -74,10 +88,13 @@ public class Sender implements Runnable {
 
     /**
      * Stops the sender and cleans up resources
+     * 
+     * Interrupts the thread in which Sender is running and closes resources.
+     * Sender will not be able to be started again.
      */
     void stop() {
-        this.input.close();
         this.thread.interrupt();
+        this.input.close();
         try {
             this.dos.close();
         } catch (IOException ex) {

@@ -9,6 +9,7 @@ public class UnknownMessage extends Message {
 
     /**
      * Constructor
+     * 
      * @param body
      */
     public UnknownMessage(String body) {

@@ -12,6 +12,7 @@ public class ConsoleLogger implements MessageObserver, MessageVisitor {
 
     /**
      * Gets notified about new message
+     * 
      * @param message 
      */
     @Override
@@ -21,6 +22,7 @@ public class ConsoleLogger implements MessageObserver, MessageVisitor {
 
     /**
      * Visits message and prints out its formatted output
+     * 
      * @param message 
      */
     @Override

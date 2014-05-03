@@ -9,12 +9,13 @@ public class ChatMessage extends Message {
 
     /**
      * Constructor
-     * Parses raw message from the server and stores data into attributes
+     * Parses raw message from the server and stores data into attributes.
+     * 
      * @param body
      */
     public ChatMessage(String body) {
         super();
-        // message goes: room(a)sender(b)message
+        // message structure: room(a)sender(b)message...
         // Get indexes
         int a, b;
         a = body.indexOf(" ");

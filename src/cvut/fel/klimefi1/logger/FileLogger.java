@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 /**
  * File logger logs incoming server messages to corresponding files
+ * 
  * @author Filip Klimes <kliemfi1@fel.cvut.cz>
  */
 public class FileLogger implements MessageObserver, MessageVisitor {
@@ -28,6 +29,7 @@ public class FileLogger implements MessageObserver, MessageVisitor {
     
     /**
      * Gets notified about new message
+     * 
      * @param message 
      */
     @Override
@@ -36,7 +38,7 @@ public class FileLogger implements MessageObserver, MessageVisitor {
     }
     
     /**
-     * Cleans up resources
+     * Cleans up resources. Closes all containing files.
      */
     public void close() {
         for(FileHandler fof : files.values()) {
@@ -45,7 +47,8 @@ public class FileLogger implements MessageObserver, MessageVisitor {
     }
 
     /**
-     * Visits message
+     * Visits message and decides whether to save it to a file.
+     * 
      * @param message 
      */
     @Override
@@ -70,6 +73,8 @@ public class FileLogger implements MessageObserver, MessageVisitor {
     
     /**
      * Retrieves FileHandler from files set
+     * If there is no such FileHandler, creates a new one.
+     * 
      * @param key Name of the room
      * @return File handler
      * @throws FileNotFoundException 

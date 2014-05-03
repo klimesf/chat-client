@@ -37,9 +37,7 @@ public abstract class Message {
     protected String room = null;
 
     /**
-     * Creates message
-     *
-     * @param body
+     * Constructor. Prepares date of the message.
      */
     public Message() {
         this.date = new Date();

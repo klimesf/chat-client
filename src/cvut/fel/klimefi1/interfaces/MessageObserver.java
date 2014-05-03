@@ -1,19 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package cvut.fel.klimefi1.interfaces;
 
 import cvut.fel.klimefi1.serverMessages.Message;
 
 /**
- *
- * @author filip
+ * MessageObserver observes MessageObservable object
+ * 
+ * @author Filip Klimes <klimefi1@fel.cvut.cz>
  */
 public interface MessageObserver {
     
+    /**
+     * Updates the observer about new message
+     * @param message 
+     */
     void update(Message message);
     
 }

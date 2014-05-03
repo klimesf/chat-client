@@ -3,12 +3,17 @@ import cvut.fel.klimefi1.serverMessages.*;
 
 /**
  * Factory for creating concrete messages
+ * 
  * @author Filip Klimes
  */
 public class MessageFactory {
 
     /**
      * Creates message of given type with given body
+     * 
+     * Decides about the concrete implementation of Message on type
+     * Supported types are: STATUS, ERR, LIST, RECV, MSG and GOODBYE
+     * 
      * @param type
      * @param body
      * @return 

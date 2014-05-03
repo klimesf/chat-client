@@ -17,7 +17,7 @@ public interface MessageObservable {
     void registerObserver(MessageObserver o);
     
     /**
-     * Unregisters given observer. If the observer is not registered,
+     * Unregisters given observer. If the given observer is not registered,
      * does nothing.
      * 
      * @param o 
