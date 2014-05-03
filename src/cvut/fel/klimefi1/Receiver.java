@@ -10,7 +10,6 @@ import cvut.fel.klimefi1.serverMessages.Message;
 import cvut.fel.klimefi1.interfaces.MessageObservable;
 import cvut.fel.klimefi1.interfaces.MessageObserver;
 import java.util.HashSet;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -56,6 +55,10 @@ public class Receiver implements Runnable, MessageObservable {
                 String type = sc.next();
                 String body = sc.nextLine().trim();
                 this.notifyObservers(this.messageFactory.createMessage(type, body));
+                if(type.equals("GOODBYE")) {
+                    ChatClient.disconnect();
+                    break;
+                }
             }
         }
     }
