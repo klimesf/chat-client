@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package cvut.fel.klimefi1;
 
 import cvut.fel.klimefi1.serverMessages.Message;
@@ -38,6 +32,8 @@ public class Receiver implements Runnable, MessageObservable {
      */
     private final Set<MessageObserver> observers;
     
+    private final Thread thread;
+    
     /**
      * Constructor
      * @param sc Server input scanner
@@ -46,21 +42,30 @@ public class Receiver implements Runnable, MessageObservable {
         this.sc = sc;
         this.messageFactory = new MessageFactory();
         this.observers = new HashSet<>();
+        this.thread = new Thread(this);
     }
     
+    /**
+     * Starts the receiver in it's own thread
+     */
+    public void start() {
+        this.thread.start();
+    }
+    
+    /**
+     * Runs the receiver
+     */
     @Override
     public void run() {
-        while(true) {
-            if(sc.hasNext()) {
-                String type = sc.next();
-                String body = sc.nextLine().trim();
-                this.notifyObservers(this.messageFactory.createMessage(type, body));
-                if(type.equals("GOODBYE")) {
-                    ChatClient.disconnect();
-                    break;
-                }
+        while(sc.hasNext() && !this.thread.isInterrupted()) {
+            String type = sc.next();
+            String body = sc.nextLine().trim();
+            this.notifyObservers(this.messageFactory.createMessage(type, body));
+            if(type.equals("GOODBYE")) {
+                break;
             }
         }
+        ChatClient.disconnect();
     }
 
     /**
@@ -90,6 +95,14 @@ public class Receiver implements Runnable, MessageObservable {
         for(MessageObserver observer : this.observers) {
             observer.update(message);
         }
+    }
+    
+    /**
+     * Stops the receiver
+     */
+    public void stop() {
+        this.sc.close();
+        this.thread.interrupt();
     }
     
 }

@@ -13,51 +13,52 @@ import java.util.logging.Logger;
 
 /**
  * Main class of the Chat Client
+ *
  * @author Filip Klimes <klimefi1@fel.cvut.cz>
  */
 public class ChatClient {
-    
+
     private static Socket server;
-    private static Thread receiverThread;
-    private static Thread senderThread;
+    private static Receiver receiver;
+    private static Sender sender;
     private static ConsoleLogger consoleLogger;
     private static FileLogger fileLogger;
-    
-    public static void main(String args[]) throws IOException {
-        
+
+    public static void main(String args[]) {
+
         // Intro
-        System.out.println("** ChatClient v0.1");
+        System.out.println("** ChatClient v0.2");
         System.out.println("** cvut.fel.klimefi1");
         System.out.println();
-        
+
         ChatClient.consoleLogger = new ConsoleLogger();
         ChatClient.fileLogger = new FileLogger();
-        
+
         try {
             Scanner input = new Scanner(System.in);
-            
+
             // Get server address
             String ip = "127.0.0.1";
             int port = 4567;
-            if(Arrays.asList(args).contains("selectip")) {
+            if (Arrays.asList(args).contains("selectip")) {
                 System.out.print("Select IP address (default 127.0.0.1): ");
                 ip = input.nextLine();
                 System.out.print("Select port (default 4567): ");
                 port = Integer.parseInt(input.nextLine());
             }
-            
+
             // Connect to the server
             server = new Socket(ip, port);
             DataOutputStream dos = new DataOutputStream(server.getOutputStream());
             Scanner response = new Scanner(server.getInputStream());
 
             // Initialize receiver
-            Receiver receiver = new Receiver(response);
+            receiver = new Receiver(response);
             receiver.registerObserver(ChatClient.consoleLogger);
             receiver.registerObserver(ChatClient.fileLogger);
-            
+
             // Initialize sender
-            Sender sender = new Sender(dos);
+            sender = new Sender(new Scanner(System.in), dos);
 
             // Scan the nick as the first action
             String command;
@@ -69,32 +70,35 @@ public class ChatClient {
             dos.writeBytes("NICK " + command + "\n");
 
             // Run the threads
-            receiverThread = new Thread(receiver);
-            receiverThread.start();
-            senderThread = new Thread(sender);
-            senderThread.start();
+            receiver.start();
+            sender.start();
 
-        } catch(ConnectException ex) {
+        } catch (ConnectException ex) {
+            System.out.println("Server connection error!");
+            ChatClient.disconnect();
+        } catch (IOException ex) {
             System.out.println("Server connection error!");
             ChatClient.disconnect();
         }
     }
-    
+
     public static void disconnect() {
-        System.out.println("Client stopped.");
-        // Close threads
-        if(receiverThread != null) {
-            receiverThread.interrupt();
+        
+        System.out.println("Disconnected ..");
+        // Cloase threads
+        if(ChatClient.receiver != null) {
+            ChatClient.receiver.stop();
         }
-        if(senderThread != null) {
-            senderThread.interrupt();
+        if(ChatClient.sender != null) {
+            ChatClient.sender.stop();
         }
         // Close server connection
         try {
-            if(server != null)
+            if (server != null) {
                 server.close();
+            }
         } catch (IOException ex) {
-            Logger.getLogger(ChatClient.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error while closing connection to the server");
         }
         // Close files
         ChatClient.fileLogger.close();

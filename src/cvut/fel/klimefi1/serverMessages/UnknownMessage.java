@@ -1,29 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package cvut.fel.klimefi1.serverMessages;
 
 /**
- *
- * @author filip
+ * Unknown message represents unrecognized response from the server
+ * 
+ * @author Filip Klimes <klimefi1@fel.cvut.cz>
  */
 public class UnknownMessage extends Message {
 
+    /**
+     * Constructor
+     * @param body
+     */
     public UnknownMessage(String body) {
-        super(body);
-    }
-
-    @Override
-    public String getFileOutput() {
-        return null;
-    }
-
-    @Override
-    public String getConsoleOutput() {
-        return "Server: Responded with unknown message";
+        super();
+        this.text = "Server responded with an uknown message";
     }
     
 }

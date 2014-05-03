@@ -1,43 +1,28 @@
 package cvut.fel.klimefi1.serverMessages;
 
 /**
- *
- * @author filip
+ * Chat message represents incoming chat message from the server in a room
+ * 
+ * @author Filip Klimes <klimefi1@fel.cvut.cz>
  */
 public class ChatMessage extends Message {
 
-    public ChatMessage(String author) {
-        super(author);
+    /**
+     * Constructor
+     * Parses raw message from the server and stores data into attributes
+     * @param body
+     */
+    public ChatMessage(String body) {
+        super();
+        // message goes: room(a)sender(b)message
+        // Get indexes
+        int a, b;
+        a = body.indexOf(" ");
+        b = body.indexOf(" ", a + 1);
+        // Fill attributes
+        this.room = body.substring(0, a).trim();
+        this.sender = body.substring(a, b).trim();
+        this.text = body.substring(b).trim();
     }
-
-    @Override
-    public String getFileOutput() {
-        String[] parts = this.body.split(" ");
-        StringBuilder output = new StringBuilder();
-        
-        output.append(parts[0]).append(" "); // For the file logger to recognize the room name
-
-        output.append(parts[1]).append(": ");
-        
-        for(int i = 2; i < parts.length; i++) {
-            output.append(parts[i]).append(" ");
-        }
-        
-        return output.toString();
-    }
-
-    @Override
-    public String getConsoleOutput() {
-        String[] parts = this.body.split(" ");
-        StringBuilder output = new StringBuilder();
-        
-        output.append("[").append(parts[0]).append("] ");
-        output.append(parts[1]).append(": ");
-        
-        for(int i = 2; i < parts.length; i++) {
-            output.append(parts[i]).append(" ");
-        }
-        
-        return output.toString();
-    }
+    
 }

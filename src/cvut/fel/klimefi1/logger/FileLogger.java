@@ -12,12 +12,12 @@ import java.util.logging.Logger;
  * File logger logs incoming server messages to corresponding files
  * @author Filip Klimes <kliemfi1@fel.cvut.cz>
  */
-public class FileLogger implements MessageObserver {
+public class FileLogger implements MessageObserver, MessageVisitor {
 
     /**
      * Map of the files
      */
-    private final Map<String, FileOutputFacade> files;
+    private final Map<String, FileHandler> files;
     
     /**
      * Constructor
@@ -26,45 +26,61 @@ public class FileLogger implements MessageObserver {
         files = new HashMap<>();
     }
     
+    /**
+     * Gets notified about new message
+     * @param message 
+     */
     @Override
     public void update(Message message) {
-        String output = message.getFileOutput();
-        if(output != null) {
-            String[] parts = output.split(" ");
-            StringBuilder sb = new StringBuilder();
-            for(int i = 1; i < parts.length; i++) {
-                sb.append(parts[i]).append(" ");
-            }
-            this.saveLog(message.getFormattedDate(), parts[0], sb.toString());
-        }
-    }
-
-    /**
-     * Saves log to the file
-     * @param date
-     * @param file corresponding file
-     * @param log 
-     */
-    public void saveLog(String date, String file, String log) {
-        FileOutputFacade fof = files.get(log);
-        if(fof == null) {
-            try {
-                fof = new FileOutputFacade(file);
-                files.put(file, fof);
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(FileLogger.class.getName()).log(Level.SEVERE, null, ex);
-                return;
-            }
-        }
-        fof.writeBytes("[" + date + "] " + log);
+        this.visit(message);
     }
     
     /**
      * Cleans up resources
      */
     public void close() {
-        for(FileOutputFacade fof : files.values()) {
+        for(FileHandler fof : files.values()) {
             fof.close();
+        }
+    }
+
+    /**
+     * Visits message
+     * @param message 
+     */
+    @Override
+    public void visit(Message message) {
+        if(message.getRoom() == null || message.getSender() == null || message.getText() == null) {
+            return;
+        }
+        try {
+            FileHandler fh = this.getFileHandler(message.getRoom());
+            StringBuilder sb = new StringBuilder();
+            // Create the log string
+            sb.append("[").append(message.getFormattedDate()).append("] ");
+            sb.append(message.getSender()).append(": ");
+            sb.append(message.getText());
+            sb.append("\n");
+            // Write to file
+            fh.writeBytes(sb.toString());
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FileLogger.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Retrieves FileHandler from files set
+     * @param key Name of the room
+     * @return File handler
+     * @throws FileNotFoundException 
+     */
+    private FileHandler getFileHandler(String key) throws FileNotFoundException {
+        if(files.containsKey(key)) {
+            return files.get(key);
+        } else {
+            FileHandler fh = new FileHandler(key);
+            files.put(key, fh);
+            return fh;
         }
     }
     

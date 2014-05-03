@@ -1,5 +1,6 @@
 package cvut.fel.klimefi1.serverMessages;
 
+import cvut.fel.klimefi1.logger.MessageVisitor;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,20 +16,32 @@ public abstract class Message {
      */
     private final Date date;
     
+    /**
+     * Date format
+     */
     private final SimpleDateFormat dateFormat;
 
     /**
-     * Body of the message
+     * Name of the sender
      */
-    protected final String body;
+    protected String sender = null;
+    
+    /**
+     * Text of the message
+     */
+    protected String text = null;
+    
+    /**
+     * Name of the room
+     */
+    protected String room = null;
 
     /**
      * Creates message
      *
      * @param body
      */
-    public Message(String body) {
-        this.body = body;
+    public Message() {
         this.date = new Date();
         this.dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
     }
@@ -41,19 +54,37 @@ public abstract class Message {
     public String getFormattedDate() {
         return this.dateFormat.format(this.date);
     }
+    
+    /**
+     * Accepts visitor
+     * @param visitor
+     */
+    public void accept(MessageVisitor visitor) {
+        visitor.visit(this);
+    }
 
     /**
-     * Returns output formatted for the file log
-     *
-     * @return output
+     * Returns name of the message sender
+     * @return 
      */
-    public abstract String getFileOutput();
+    public String getSender() {
+        return sender;
+    }
 
     /**
-     * Returns output formatted for the console output
-     *
-     * @return
+     * Returns text of the message
+     * @return 
      */
-    public abstract String getConsoleOutput();
+    public String getText() {
+        return text;
+    }
+
+    /**
+     * Returns name of the room
+     * @return 
+     */
+    public String getRoom() {
+        return room;
+    }
 
 }
