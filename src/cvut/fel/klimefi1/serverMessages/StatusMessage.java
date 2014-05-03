@@ -1,24 +1,22 @@
 package cvut.fel.klimefi1.serverMessages;
 
 /**
- *
+ * Status message represents received status of previous command
+ * 
  * @author Filip Klimes <klimefi1@fel.cvut.cz>
  */
 public class StatusMessage extends Message {
 
-    public StatusMessage(String author) {
-        super(author);
-    }
-
-    @Override
-    public String getFileOutput() {
-        return null;
-    }
-
-    @Override
-    public String getConsoleOutput() {
-        if(this.body.equals("OK")) return null;
-        else return "Status: " + this.body;
+    /**
+     * Constructor
+     * 
+     * @param body 
+     */
+    public StatusMessage(String body) {
+        super();
+        if(!body.equals("OK")) {
+            this.text = body.trim();
+        }
     }
     
 }

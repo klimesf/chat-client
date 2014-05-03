@@ -1,36 +1,30 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package cvut.fel.klimefi1.serverMessages;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
- *
- * @author filip
+ * List message represents list of rooms on the server
+ * 
+ * @author Filip Klimes
  */
 public class ListMessage extends Message {
 
+    /**
+     * Constructor
+     * 
+     * @param body 
+     */
     public ListMessage(String body) {
-        super(body);
-    }
-
-    @Override
-    public String getFileOutput() {
-        return null;
-    }
-
-    @Override
-    public String getConsoleOutput() {
-        String[] rooms = this.body.split(" ");
+        super();
+        // Get rooms
+        List<String> rooms = Arrays.asList(body.trim());
         StringBuilder sb = new StringBuilder();
-        
-        for(String room : rooms) {
-            sb.append(" - ").append(room).append("\n");
+        for(String roomName : rooms) {
+            sb.append(" - ").append(roomName).append("\n");
         }
-        
-        return sb.toString();
+        // Fill attributes
+        this.text = sb.toString();
     }
     
 }

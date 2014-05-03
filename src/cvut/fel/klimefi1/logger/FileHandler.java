@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * Facade for saving logs into file
  * @author Filip Kimes <klimefi1@fel.cvut.cz>
  */
-public class FileOutputFacade {
+public class FileHandler {
     
     /**
      * File holder
@@ -40,7 +40,7 @@ public class FileOutputFacade {
      * @param filename
      * @throws FileNotFoundException 
      */
-    public FileOutputFacade(String filename) throws FileNotFoundException {
+    public FileHandler(String filename) throws FileNotFoundException {
         this.filename = "room-" + filename + ".log";
         this.file = new File(this.filename);
         this.dos = new DataOutputStream(new FileOutputStream(file, true)); // Append = true
@@ -54,7 +54,7 @@ public class FileOutputFacade {
         try {
             this.dos.writeBytes(log + "\n");
         } catch (IOException ex) {
-            Logger.getLogger(FileOutputFacade.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -65,7 +65,7 @@ public class FileOutputFacade {
         try {
             this.dos.close();
         } catch (IOException ex) {
-            Logger.getLogger(FileOutputFacade.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

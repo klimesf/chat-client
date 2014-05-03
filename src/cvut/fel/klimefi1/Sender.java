@@ -1,40 +1,52 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package cvut.fel.klimefi1;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Sender class
  * 
- * Reads 
+ * Reads from System.in and sends commands to the server
  * 
  * @author Filip Klimes <klimefi1@fel.cvut.cz>
  */
 public class Sender implements Runnable {
 
-    private DataOutputStream dos;
+    private final DataOutputStream dos;
     
-    public Sender(DataOutputStream dos) {
+    private final Thread thread;
+    
+    private final Scanner input;
+    
+    /**
+     * Creates a sender with given data output stream
+     * @param input Scanner for input stream
+     * @param dos Steam connected to the server
+     */
+    public Sender(Scanner input, DataOutputStream dos) {
+        this.input = input;
         this.dos = dos;
+        this.thread = new Thread(this);
     }
     
+    /**
+     * Starts the sender
+     */
+    public void start() {
+        this.thread.start();
+    }
+    
+    /**
+     * Runs the sender
+     */
     @Override
     public void run() {
-        Scanner input = new Scanner(System.in);
         String command;
         
-        while(true) {
+        while(input.hasNext() && !this.thread.isInterrupted()) {
             command = input.nextLine();
-            
+
             if(command.equals("HELP")) {
                 System.out.println("List of supported commands:");
                 System.out.println("LIST                      - Returns a list of existing rooms on the server");
@@ -49,15 +61,28 @@ public class Sender implements Runnable {
             try {
                 dos.writeBytes(command + "\n");
             } catch (IOException ex) {
-                Logger.getLogger(Sender.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println("ERR Could not send command to the server");
+                System.out.println("Server went away");
+                ChatClient.disconnect();
+                break;
             }
             
             if(command.equals("BYE")) {
                 break;
             }
         }
-        
     }
-    
+
+    /**
+     * Stops the sender and cleans up resources
+     */
+    void stop() {
+        this.input.close();
+        this.thread.interrupt();
+        try {
+            this.dos.close();
+        } catch (IOException ex) {
+            System.out.println("An error occured while closing "
+                    + "communication with server.");
+        }
+    }
 }
