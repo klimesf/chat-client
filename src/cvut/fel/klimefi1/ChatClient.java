@@ -6,9 +6,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,13 +22,8 @@ public class ChatClient {
     private static Thread senderThread;
     private static ConsoleLogger consoleLogger;
     private static FileLogger fileLogger;
-    private static Set<String> arguments = new HashSet<>();
     
     public static void main(String args[]) throws IOException {
-        
-        for(String arg : args) {
-            arguments.add(arg);
-        }
         
         // Intro
         System.out.println("** ChatClient v0.1");
@@ -45,11 +39,11 @@ public class ChatClient {
             // Get server address
             String ip = "127.0.0.1";
             int port = 4567;
-            if(arguments.contains("selectip")) {
+            if(Arrays.asList(args).contains("selectip")) {
                 System.out.print("Select IP address (default 127.0.0.1): ");
                 ip = input.nextLine();
                 System.out.print("Select port (default 4567): ");
-                port = input.nextInt();
+                port = Integer.parseInt(input.nextLine());
             }
             
             // Connect to the server
@@ -82,22 +76,27 @@ public class ChatClient {
 
         } catch(ConnectException ex) {
             System.out.println("Server connection error!");
+            ChatClient.disconnect();
         }
     }
     
     public static void disconnect() {
-        // TODO fix the "still running after disconnect" issue
         System.out.println("Client stopped.");
+        // Close threads
+        if(receiverThread != null) {
+            receiverThread.interrupt();
+        }
+        if(senderThread != null) {
+            senderThread.interrupt();
+        }
+        // Close server connection
         try {
-            if(senderThread != null)
-                senderThread.interrupt();
-            if(receiverThread != null)
-                receiverThread.interrupt();
             if(server != null)
                 server.close();
         } catch (IOException ex) {
             Logger.getLogger(ChatClient.class.getName()).log(Level.SEVERE, null, ex);
         }
+        // Close files
         ChatClient.fileLogger.close();
     }
 }
