@@ -32,6 +32,9 @@ public class Receiver implements Runnable, MessageObservable {
      */
     private final Set<MessageObserver> observers;
     
+    /**
+     * Thread in which the Receiver runs.
+     */
     private final Thread thread;
     
     /**
@@ -65,7 +68,6 @@ public class Receiver implements Runnable, MessageObservable {
                 break;
             }
         }
-        ChatClient.disconnect();
     }
 
     /**
@@ -103,6 +105,14 @@ public class Receiver implements Runnable, MessageObservable {
     public void stop() {
         this.sc.close();
         this.thread.interrupt();
+    }
+    
+    /**
+     * Returns thread in which the receiver is running.
+     * @return 
+     */
+    public Thread getThread() {
+        return this.thread;
     }
     
 }

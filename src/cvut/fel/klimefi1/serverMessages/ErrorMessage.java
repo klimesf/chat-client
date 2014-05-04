@@ -1,5 +1,7 @@
 package cvut.fel.klimefi1.serverMessages;
 
+import cvut.fel.klimefi1.logger.MessageVisitor;
+
 /**
  * Error message represents message about an error
  * 
@@ -7,6 +9,8 @@ package cvut.fel.klimefi1.serverMessages;
  */
 public class ErrorMessage extends Message {
 
+    private final String text;
+    
     /**
      * Constructor
      * 
@@ -15,6 +19,15 @@ public class ErrorMessage extends Message {
     public ErrorMessage(String body) {
         super();
         this.text = body.trim();
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    @Override
+    public void accept(MessageVisitor visitor) {
+        visitor.visit(this);
     }
     
 }

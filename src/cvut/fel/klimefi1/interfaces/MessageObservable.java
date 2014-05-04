@@ -1,6 +1,6 @@
 package cvut.fel.klimefi1.interfaces;
 
-import cvut.fel.klimefi1.serverMessages.Message;
+import cvut.fel.klimefi1.serverMessages.*;
 
 /**
  * Message observable object holds observers and notifies them

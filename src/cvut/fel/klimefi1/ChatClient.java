@@ -94,22 +94,40 @@ public class ChatClient {
             // Run the threads
             receiver.start();
             sender.start();
+            
+            // Wait for threads to stop
+            try {
+                receiver.getThread().join();
+            } catch (InterruptedException ex) {
+            }
+            try {
+                sender.getThread().join();
+            } catch (InterruptedException ex) {
+            }
 
         } catch (ConnectException ex) {
             System.out.println("Server connection error!");
-            ChatClient.disconnect();
+            ChatClient.stop();
         } catch (IOException ex) {
             System.out.println("Server connection error!");
-            ChatClient.disconnect();
+            ChatClient.stop();
+        } finally {
+            // Stop threads
+            ChatClient.stop();
+            // Close server connection
+            try {
+                server.close();
+            } catch (IOException ex) {
+            }
+            // Clean up file logger
+            fileLogger.close();
         }
     }
 
     /**
      * Disconnects from server and cleans resources
      */
-    public static void disconnect() {
-        
-        System.out.println("Disconnected ..");
+    public static void stop() {
         // Cloase threads
         if(ChatClient.receiver != null) {
             ChatClient.receiver.stop();
@@ -117,15 +135,5 @@ public class ChatClient {
         if(ChatClient.sender != null) {
             ChatClient.sender.stop();
         }
-        // Close server connection
-        try {
-            if (server != null) {
-                server.close();
-            }
-        } catch (IOException ex) {
-            System.out.println("Error while closing connection to the server");
-        }
-        // Close files
-        ChatClient.fileLogger.close();
     }
 }

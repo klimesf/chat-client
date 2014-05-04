@@ -1,5 +1,7 @@
 package cvut.fel.klimefi1.serverMessages;
 
+import cvut.fel.klimefi1.logger.MessageVisitor;
+
 /**
  * Chat message represents incoming chat message from the server in a room
  * 
@@ -7,6 +9,12 @@ package cvut.fel.klimefi1.serverMessages;
  */
 public class ChatMessage extends Message {
 
+    private final String room;
+    
+    private final String sender;
+    
+    private final String text;
+    
     /**
      * Constructor
      * Parses raw message from the server and stores data into attributes.
@@ -24,6 +32,23 @@ public class ChatMessage extends Message {
         this.room = body.substring(0, a).trim();
         this.sender = body.substring(a, b).trim();
         this.text = body.substring(b).trim();
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    @Override
+    public void accept(MessageVisitor visitor) {
+        visitor.visit(this);
     }
     
 }

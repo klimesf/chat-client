@@ -1,5 +1,7 @@
 package cvut.fel.klimefi1.serverMessages;
 
+import cvut.fel.klimefi1.logger.MessageVisitor;
+
 /**
  * Receive message represents confirmation about sent message from the client
  * 
@@ -7,6 +9,8 @@ package cvut.fel.klimefi1.serverMessages;
  */
 public class RecieveMessage extends Message {
 
+    private final String text;
+    
     /**
      * Constructor
      * 
@@ -15,6 +19,15 @@ public class RecieveMessage extends Message {
     public RecieveMessage(String body) {
         super();
         this.text = "Message sent";
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    @Override
+    public void accept(MessageVisitor visitor) {
+        visitor.visit(this);
     }
     
 }

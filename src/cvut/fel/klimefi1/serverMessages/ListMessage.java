@@ -1,5 +1,6 @@
 package cvut.fel.klimefi1.serverMessages;
 
+import cvut.fel.klimefi1.logger.MessageVisitor;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,6 +11,9 @@ import java.util.List;
  */
 public class ListMessage extends Message {
 
+    
+    private final String text;
+    
     /**
      * Constructor
      * 
@@ -25,6 +29,15 @@ public class ListMessage extends Message {
         }
         // Fill attributes
         this.text = sb.toString();
+    }
+
+    public String getText() {
+        return text;
+    }
+    
+    @Override
+    public void accept(MessageVisitor visitor) {
+        visitor.visit(this);
     }
     
 }

@@ -76,7 +76,6 @@ public class Sender implements Runnable {
                 dos.writeBytes(command + "\n");
             } catch (IOException ex) {
                 System.out.println("Server went away");
-                ChatClient.disconnect();
                 break;
             }
             
@@ -101,5 +100,13 @@ public class Sender implements Runnable {
             System.out.println("An error occured while closing "
                     + "communication with server.");
         }
+    }
+    
+    /**
+     * Returns thread in which the receiver is running.
+     * @return 
+     */
+    public Thread getThread() {
+        return this.thread;
     }
 }
