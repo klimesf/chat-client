@@ -107,10 +107,8 @@ public class ChatClient {
 
         } catch (ConnectException ex) {
             System.out.println("Server connection error!");
-            ChatClient.stop();
         } catch (IOException ex) {
             System.out.println("Server connection error!");
-            ChatClient.stop();
         } finally {
             // Stop threads
             ChatClient.stop();

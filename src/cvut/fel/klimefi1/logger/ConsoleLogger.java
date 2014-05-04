@@ -1,14 +1,7 @@
 package cvut.fel.klimefi1.logger;
 
 import cvut.fel.klimefi1.serverMessages.ChatMessage;
-import cvut.fel.klimefi1.serverMessages.DisconnectedMessage;
-import cvut.fel.klimefi1.serverMessages.ErrorMessage;
-import cvut.fel.klimefi1.serverMessages.ListMessage;
-import cvut.fel.klimefi1.serverMessages.Message;
-import cvut.fel.klimefi1.serverMessages.RecieveMessage;
-import cvut.fel.klimefi1.serverMessages.StatusMessage;
 import cvut.fel.klimefi1.serverMessages.TextOnlyMessage;
-import cvut.fel.klimefi1.serverMessages.UnknownMessage;
 
 /**
  * Console logger
