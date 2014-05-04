@@ -76,8 +76,8 @@ public class ChatClient {
 
             // Initialize receiver
             receiver = new Receiver(response);
-            receiver.registerObserver(ChatClient.consoleLogger);
-            receiver.registerObserver(ChatClient.fileLogger);
+            receiver.registerVisitor(ChatClient.consoleLogger);
+            receiver.registerVisitor(ChatClient.fileLogger);
 
             // Initialize sender
             sender = new Sender(new Scanner(System.in), dos);

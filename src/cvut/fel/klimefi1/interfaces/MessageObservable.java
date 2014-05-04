@@ -1,5 +1,6 @@
 package cvut.fel.klimefi1.interfaces;
 
+import cvut.fel.klimefi1.logger.MessageVisitor;
 import cvut.fel.klimefi1.serverMessages.*;
 
 /**
@@ -12,23 +13,23 @@ public interface MessageObservable {
     /**
      * Registers given observer.
      * 
-     * @param o 
+     * @param v
      */
-    void registerObserver(MessageObserver o);
+    void registerVisitor(MessageVisitor v);
     
     /**
      * Unregisters given observer. If the given observer is not registered,
      * does nothing.
      * 
-     * @param o 
+     * @param v 
      */
-    void unregisterObserver(MessageObserver o);
+    void unregisterVisitor(MessageVisitor v);
     
     /**
-     * Notifies all registered observers about given message.
+     * Notifies all registered visitors about given message.
      * 
      * @param message 
      */
-    void notifyObservers(Message message);
+    void notifyVisitors(Message message);
     
 }

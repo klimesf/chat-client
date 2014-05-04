@@ -1,8 +1,8 @@
 package cvut.fel.klimefi1;
 
-import cvut.fel.klimefi1.serverMessages.Message;
 import cvut.fel.klimefi1.interfaces.MessageObservable;
-import cvut.fel.klimefi1.interfaces.MessageObserver;
+import cvut.fel.klimefi1.logger.MessageVisitor;
+import cvut.fel.klimefi1.serverMessages.Message;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -30,7 +30,7 @@ public class Receiver implements Runnable, MessageObservable {
     /**
      * Set containing registered observers
      */
-    private final Set<MessageObserver> observers;
+    private final Set<MessageVisitor> visitors;
     
     /**
      * Thread in which the Receiver runs.
@@ -44,7 +44,7 @@ public class Receiver implements Runnable, MessageObservable {
     public Receiver(Scanner sc) {
         this.sc = sc;
         this.messageFactory = new MessageFactory();
-        this.observers = new HashSet<>();
+        this.visitors = new HashSet<>();
         this.thread = new Thread(this);
     }
     
@@ -63,7 +63,8 @@ public class Receiver implements Runnable, MessageObservable {
         while(sc.hasNext() && !this.thread.isInterrupted()) {
             String type = sc.next();
             String body = sc.nextLine().trim();
-            this.notifyObservers(this.messageFactory.createMessage(type, body));
+            this.notifyVisitors(this.messageFactory.createMessage(type, body));
+
             if(type.equals("GOODBYE")) {
                 break;
             }
@@ -71,21 +72,21 @@ public class Receiver implements Runnable, MessageObservable {
     }
 
     /**
-     * Registers a new observer
-     * @param o 
+     * Registers a new visitor.
+     * @param v 
      */
     @Override
-    public void registerObserver(MessageObserver o) {
-        this.observers.add(o);
+    public void registerVisitor(MessageVisitor v) {
+        this.visitors.add(v);
     }
 
     /**
-     * Unregisters given observer
-     * @param o 
+     * Unregisters given visitor.
+     * @param v 
      */
     @Override
-    public void unregisterObserver(MessageObserver o) {
-        this.observers.remove(o);
+    public void unregisterVisitor(MessageVisitor v) {
+        this.visitors.remove(v);
     }
 
     /**
@@ -93,9 +94,9 @@ public class Receiver implements Runnable, MessageObservable {
      * @param message 
      */
     @Override
-    public void notifyObservers(Message message) {
-        for(MessageObserver observer : this.observers) {
-            observer.update(message);
+    public void notifyVisitors(Message message) {
+        for(MessageVisitor visitor : this.visitors) {
+            message.accept(visitor);
         }
     }
     

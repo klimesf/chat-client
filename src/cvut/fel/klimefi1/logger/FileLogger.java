@@ -1,11 +1,9 @@
 package cvut.fel.klimefi1.logger;
 
-import cvut.fel.klimefi1.interfaces.MessageObserver;
 import cvut.fel.klimefi1.serverMessages.ChatMessage;
 import cvut.fel.klimefi1.serverMessages.DisconnectedMessage;
 import cvut.fel.klimefi1.serverMessages.ErrorMessage;
 import cvut.fel.klimefi1.serverMessages.ListMessage;
-import cvut.fel.klimefi1.serverMessages.Message;
 import cvut.fel.klimefi1.serverMessages.RecieveMessage;
 import cvut.fel.klimefi1.serverMessages.StatusMessage;
 import cvut.fel.klimefi1.serverMessages.UnknownMessage;
@@ -18,7 +16,7 @@ import java.util.Map;
  * 
  * @author Filip Klimes <kliemfi1@fel.cvut.cz>
  */
-public class FileLogger implements MessageObserver, MessageVisitor {
+public class FileLogger implements MessageVisitor {
 
     /**
      * Map of the files
@@ -100,36 +98,5 @@ public class FileLogger implements MessageObserver, MessageVisitor {
             return fh;
         }
     }
-@Override
-    public void update(Message message) {
-        switch(message.getClass().getName())  {
-            case "ChatMessage":
-                this.visit((ChatMessage)message);
-                break;
-                
-            case "DisconnectedMessage":
-                this.visit((DisconnectedMessage)message);
-                break;
-                
-            case "ErrorMessage":
-                this.visit((ErrorMessage)message);
-                break;
-                
-            case "ListMessage":
-                this.visit((ListMessage)message);
-                break;
-                
-            case "RecieveMessage":
-                this.visit((RecieveMessage)message);
-                break;
-                
-            case "StatusMessage":
-                this.visit((StatusMessage)message);
-                break;
-                
-            case "UnknownMessage":
-                this.visit((UnknownMessage)message);
-                break;
-        }
-    }
+    
 }
