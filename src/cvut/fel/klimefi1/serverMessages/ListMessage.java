@@ -9,10 +9,7 @@ import java.util.List;
  * 
  * @author Filip Klimes
  */
-public class ListMessage extends Message {
-
-    
-    private final String text;
+public class ListMessage extends TextOnlyMessage {
     
     /**
      * Constructor
@@ -29,15 +26,6 @@ public class ListMessage extends Message {
         }
         // Fill attributes
         this.text = sb.toString();
-    }
-
-    public String getText() {
-        return text;
-    }
-    
-    @Override
-    public void accept(MessageVisitor visitor) {
-        visitor.visit(this);
     }
     
 }

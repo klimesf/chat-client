@@ -12,12 +12,12 @@ import java.util.Date;
 public abstract class Message {
 
     /**
-     * Date of the message
+     * Date of the message.
      */
     private final Date date;
     
     /**
-     * Date format
+     * Date format.
      */
     private final SimpleDateFormat dateFormat;
     

@@ -7,6 +7,7 @@ import cvut.fel.klimefi1.serverMessages.ListMessage;
 import cvut.fel.klimefi1.serverMessages.Message;
 import cvut.fel.klimefi1.serverMessages.RecieveMessage;
 import cvut.fel.klimefi1.serverMessages.StatusMessage;
+import cvut.fel.klimefi1.serverMessages.TextOnlyMessage;
 import cvut.fel.klimefi1.serverMessages.UnknownMessage;
 
 /**
@@ -34,37 +35,16 @@ public class ConsoleLogger implements MessageVisitor {
         }
     }
     
+    /**
+     * Visits text only message and prints it out. If the message is null,
+     * does nothing.
+     * @param message 
+     */
     @Override
-    public void visit(DisconnectedMessage message) {
-        System.out.println(message.getText());
-    }
-    
-    @Override
-    public void visit(ErrorMessage message) {
-        System.out.println("Error: " + message.getText());
-    }
-    
-    @Override
-    public void visit(ListMessage message) {
-        System.out.println("Rooms:");
-        System.out.println(message.getText());
-    }
-    
-    @Override
-    public void visit(RecieveMessage message) {
-        System.out.println(message.getText());
-    }
-    
-    @Override
-    public void visit(StatusMessage message) {
+    public void visit(TextOnlyMessage message) {
         if(message.getText() != null) {
             System.out.println(message.getText());
         }
-    }
-    
-    @Override
-    public void visit(UnknownMessage message) {
-        System.out.println(message.getText());
     }
     
 }

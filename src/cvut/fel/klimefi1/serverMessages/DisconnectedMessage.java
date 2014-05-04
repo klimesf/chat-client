@@ -7,9 +7,7 @@ import cvut.fel.klimefi1.logger.MessageVisitor;
  * 
  * @author Filip Klimes
  */
-public class DisconnectedMessage extends Message {
-
-    private final String text;
+public class DisconnectedMessage extends TextOnlyMessage {
     
     /**
      * Constructor
@@ -21,10 +19,10 @@ public class DisconnectedMessage extends Message {
         this.text = "Disconnected";
     }
 
-    public String getText() {
-        return text;
-    }
-
+    /**
+     * Accepts visitor.
+     * @param visitor 
+     */
     @Override
     public void accept(MessageVisitor visitor) {
         visitor.visit(this);

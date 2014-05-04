@@ -9,10 +9,19 @@ import cvut.fel.klimefi1.logger.MessageVisitor;
  */
 public class ChatMessage extends Message {
 
+    /**
+     * Name of the room to which the message belongs.
+     */
     private final String room;
     
+    /**
+     * Name of the sender of the message.
+     */
     private final String sender;
     
+    /**
+     * Text of the message.
+     */
     private final String text;
     
     /**
@@ -34,18 +43,34 @@ public class ChatMessage extends Message {
         this.text = body.substring(b).trim();
     }
 
+    /**
+     * Returns room name.
+     * @return 
+     */
     public String getRoom() {
         return room;
     }
 
+    /**
+     * Returns sender name.
+     * @return 
+     */
     public String getSender() {
         return sender;
     }
 
+    /**
+     * Returns text of the message.
+     * @return 
+     */
     public String getText() {
         return text;
     }
 
+    /**
+     * Accepts visitor.
+     * @param visitor 
+     */
     @Override
     public void accept(MessageVisitor visitor) {
         visitor.visit(this);

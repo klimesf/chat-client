@@ -6,6 +6,7 @@ import cvut.fel.klimefi1.serverMessages.ErrorMessage;
 import cvut.fel.klimefi1.serverMessages.ListMessage;
 import cvut.fel.klimefi1.serverMessages.RecieveMessage;
 import cvut.fel.klimefi1.serverMessages.StatusMessage;
+import cvut.fel.klimefi1.serverMessages.TextOnlyMessage;
 import cvut.fel.klimefi1.serverMessages.UnknownMessage;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -63,23 +64,12 @@ public class FileLogger implements MessageVisitor {
         }
     }
 
+    /**
+     * Visits text only message.
+     * @param message 
+     */
     @Override
-    public void visit(DisconnectedMessage message) {}
-
-    @Override
-    public void visit(ErrorMessage message) {}
-
-    @Override
-    public void visit(ListMessage message) {}
-
-    @Override
-    public void visit(RecieveMessage message) {}
-
-    @Override
-    public void visit(StatusMessage message) {}
-
-    @Override
-    public void visit(UnknownMessage message) {}
+    public void visit(TextOnlyMessage message) {}
     
     /**
      * Retrieves FileHandler from files set

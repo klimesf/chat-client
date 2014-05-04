@@ -1,15 +1,11 @@
 package cvut.fel.klimefi1.serverMessages;
 
-import cvut.fel.klimefi1.logger.MessageVisitor;
-
 /**
  * Error message represents message about an error
  * 
  * @author Filip Klimes <klimefi1@fel.cvut>
  */
-public class ErrorMessage extends Message {
-
-    private final String text;
+public class ErrorMessage extends TextOnlyMessage {
     
     /**
      * Constructor
@@ -21,13 +17,4 @@ public class ErrorMessage extends Message {
         this.text = body.trim();
     }
 
-    public String getText() {
-        return text;
-    }
-
-    @Override
-    public void accept(MessageVisitor visitor) {
-        visitor.visit(this);
-    }
-    
 }
