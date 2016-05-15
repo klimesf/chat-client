@@ -1,6 +1,6 @@
 chat-client
 ===========
-Chat clients connects to `chat-server` (127.0.0.1:4567 by default) and is able to create a new room, enter/leave rooms, retrieve list of rooms and send messages to entered rooms. User can enter multiple rooms at once.
+Chat clients connects to [chat server](https://github.com/klimesf/chat-server) (127.0.0.1:4567 by default) and is able to create a new room, enter/leave rooms, retrieve list of rooms and send messages to entered rooms. User can enter multiple rooms at once.
 
 Communication is not secured in any way.
 
